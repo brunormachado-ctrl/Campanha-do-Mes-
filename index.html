@@ -409,13 +409,13 @@
       </button>
       <button class="item" onclick="go('abordar')">
         <span class="num">3</span>
-        <span class="t">Como abordar</span>
-        <span class="d">O que falar pro cliente</span>
+        <span class="t">Abordagem e dicas</span>
+        <span class="d">Como falar e negociar com o cliente</span>
       </button>
-      <button class="item" onclick="go('dicas')">
+      <button class="item" onclick="go('atencao')">
         <span class="num">4</span>
-        <span class="t">Dicas de venda</span>
-        <span class="d">Negociação, desconto e brinde</span>
+        <span class="t">Atenção</span>
+        <span class="d">Regras que não podem passar batido</span>
       </button>
       <button class="item" onclick="go('calendario')">
         <span class="num">5</span>
@@ -500,7 +500,7 @@
   <!-- ABORDAR -->
   <div class="screen" id="abordar">
     <button class="back" onclick="go('home')">‹ Voltar</button>
-    <h2 class="title">Como <em>abordar</em></h2>
+    <h2 class="title">Abordagem <em>e dicas</em></h2>
     <div class="card">
       <h3>Sugestão de fala</h3>
       <div class="quote">"Esse mês a gente tem a promoção da Copa. Dá pra pagar no cartão em até 18x sem juros, ou no Pix com 10% de desconto. E tem a brincadeira: no Pix do palpite você paga metade agora e a outra metade só quando a parrilha fica pronta. Aí você crava o placar do jogo do Brasil. Se acertar o placar certinho, a gente corta a segunda metade. Você leva pela metade do preço. Qual seu palpite pro jogo?"</div>
@@ -518,12 +518,6 @@
       <h3>Se o cliente ficar em dúvida</h3>
       <p>Reforce que mesmo sem acertar o placar ele já sai ganhando: paga metade agora e metade só quando a parrilha fica pronta, e ainda tem o desconto do Pix. O palpite é só a chance de levar pela metade do preço.</p>
     </div>
-  </div>
-
-  <!-- DICAS -->
-  <div class="screen" id="dicas">
-    <button class="back" onclick="go('home')">‹ Voltar</button>
-    <h2 class="title">Dicas <em>de venda</em></h2>
 
     <div class="card">
       <h3>O desconto é uma negociação, não um cartaz</h3>
@@ -551,6 +545,38 @@
     <div class="card">
       <h3>Pergunte bastante</h3>
       <p>Boa venda é feita de pergunta, não de discurso. Puxe o cliente: pra quem é a parrilla, se gosta de futebol, qual o palpite dele pro jogo do Brasil. Quanto mais ele fala, mais ele se envolve, e mais perto fica de fechar.</p>
+    </div>
+  </div>
+
+  <!-- ATENCAO -->
+  <div class="screen" id="atencao">
+    <button class="back" onclick="go('home')">‹ Voltar</button>
+    <h2 class="title"><em>Atenção</em></h2>
+    <p class="intro">Pontos que não podem passar batido. Erro aqui custa caro, às vezes do seu próprio bolso.</p>
+
+    <div class="card">
+      <h3>O placar tem que ser exato</h3>
+      <p>Número contra número, e tem que bater exatamente. <span class="hl">Chegou perto não vale.</span> Não aceite palpite pela metade, do tipo "acho que o Brasil ganha".</p>
+    </div>
+    <div class="card">
+      <h3>Só conta o tempo normal</h3>
+      <p>Vale o placar do tempo normal mais acréscimos. <span class="hl">Prorrogação e pênaltis não contam.</span> Avise o cliente disso na hora do palpite.</p>
+    </div>
+    <div class="card">
+      <h3>Sem palpite anotado, não tem prêmio</h3>
+      <p>O palpite tem que ser registrado por escrito no ato da venda. Se você não anotar e o cliente comprovar depois que deu o palpite e acertou, <span class="hl">os 50% saem do seu bolso</span>. O erro foi seu, a conta é sua.</p>
+    </div>
+    <div class="card">
+      <h3>A rodada fecha no apito inicial</h3>
+      <p>A venda tem que estar fechada e os 50% de entrada pagos <span class="hl">até o apito inicial do jogo</span>. Apitou o início, não entra mais ninguém naquela rodada.</p>
+    </div>
+    <div class="card">
+      <h3>Um palpite por parrilha</h3>
+      <p>Cada parrilha comprada dá direito a um único palpite. Não acumula.</p>
+    </div>
+    <div class="card">
+      <h3>Prazo e segunda parcela</h3>
+      <p>Prazo de <span class="hl">30 dias corridos mais o transporte</span>. Deixe isso claro pra não criar expectativa errada. A segunda metade é paga <span class="hl">quando a parrilha fica pronta</span>, não na entrega.</p>
     </div>
   </div>
 
