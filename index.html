@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Promoção do Mês">
+<meta name="apple-mobile-web-app-title" content="Campanha do Mestre">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#121110">
-<title>Promoção da Copa - Guia do Vendedor</title>
+<title>Campanha do Mestre - Guia do Vendedor</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap');
 
@@ -66,6 +66,19 @@
     transition:border-color .18s,color .18s;
   }
   .savehint:hover{border-color:var(--ember);color:var(--ember-soft);}
+
+  .hero-toptitle{
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    margin:4px 0 12px;
+    font-family:'Oswald',sans-serif;font-weight:700;font-size:21px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--ember-soft);
+    text-shadow:0 1px 10px rgba(215,100,42,.25);
+  }
+  .hero-toptitle::before,.hero-toptitle::after{
+    content:"";height:1px;width:42px;
+    background:linear-gradient(90deg,transparent,var(--ember));
+  }
+  .hero-toptitle::after{background:linear-gradient(90deg,var(--ember),transparent);}
 
   /* hero header */
   .hero{
@@ -241,6 +254,24 @@
   }
   .game .match{font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;margin:5px 0 3px;}
   .game .when{font-size:13.5px;color:var(--muted2);}
+  .game .where{font-size:12.5px;color:#8c8276;margin-top:2px;}
+  .daygroup{margin-bottom:14px;}
+  .dayhdr{
+    font-family:'Oswald',sans-serif;font-size:12.5px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:7px;
+  }
+  .fx{
+    display:flex;align-items:center;gap:12px;
+    background:var(--panel);border:1px solid var(--line);border-radius:9px;
+    padding:11px 13px;margin-bottom:7px;
+  }
+  .fx.brasil{border-color:var(--ember);background:var(--panel2);}
+  .fxtime{
+    font-family:'Oswald',sans-serif;font-weight:600;font-size:14px;color:var(--ember-soft);
+    min-width:38px;flex:none;
+  }
+  .fxteams{font-size:14.5px;color:#ddd5cc;}
+  .fx.brasil .fxteams{color:#fff;font-weight:600;}
   .game .win{
     margin-top:10px;font-size:13px;color:#cfc6ba;
     background:var(--bg);border:1px dashed var(--line);border-radius:8px;
@@ -260,6 +291,18 @@
     font-family:'Barlow',sans-serif;font-size:15px;
   }
   .field input:focus, .field select:focus{outline:none;border-color:var(--ember);}
+  .check{display:flex;align-items:center;gap:10px;cursor:pointer;
+    background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:12px;}
+  .check input{width:20px;height:20px;accent-color:var(--ember);flex:none;}
+  .check span{font-size:15px;color:var(--text);}
+  .hint{display:block;margin-top:6px;font-size:12.5px;color:var(--muted2);}
+  .empty{
+    text-align:center;padding:46px 22px;background:var(--panel);
+    border:1px dashed var(--line);border-radius:13px;
+  }
+  .empty-icon{font-family:'Oswald',sans-serif;font-size:34px;color:var(--line);line-height:1;margin-bottom:14px;}
+  .empty p{font-family:'Oswald',sans-serif;font-size:17px;color:var(--text);letter-spacing:.02em;margin-bottom:8px;}
+  .empty span{font-size:13.5px;color:var(--muted2);}
   .score{display:flex;align-items:center;gap:10px;}
   .score .vs{font-family:'Oswald',sans-serif;color:var(--muted2);font-size:14px;}
   .score input{text-align:center;}
@@ -289,12 +332,22 @@
   .copy:hover{background:rgba(215,100,42,.1);}
   .copy.done{border-color:var(--green);color:var(--green);}
 
+  .savestatus{
+    font-family:'Oswald',sans-serif;font-size:13.5px;letter-spacing:.03em;
+    margin-bottom:12px;padding:10px 12px;border-radius:9px;display:none;
+  }
+  .savestatus.show{display:block;}
+  .savestatus.saving{background:var(--bg);border:1px solid var(--line);color:var(--muted2);}
+  .savestatus.ok{background:rgba(91,138,79,.14);border:1px solid var(--green);color:#8fc47f;}
+  .savestatus.err{background:rgba(215,100,42,.12);border:1px solid var(--ember);color:var(--ember-soft);}
+
   .foot{text-align:center;color:#6b635a;font-size:11.5px;margin-top:30px;letter-spacing:.03em;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
+  <div class="hero-toptitle">Promoção da Copa</div>
   <div class="hero">
     <div class="hero-flag"></div>
     <div class="hero-parrilla"></div>
@@ -310,8 +363,8 @@
     </div>
   </div>
   <div class="herotitle">
-    <h1>Promoção da Copa</h1>
-    <span>Guia do vendedor, junho 2026</span>
+    <h1>Campanha do Mestre</h1>
+    <span>Junho 2026</span>
   </div>
 
   <!-- HOME -->
@@ -346,6 +399,11 @@
       <button class="item" onclick="go('ficha')">
         <span class="num">6</span>
         <span><span class="t">Ficha do cliente</span><span class="d">Anote o palpite e mande pro responsável</span></span>
+        <span class="arrow">›</span>
+      </button>
+      <button class="item" onclick="go('especial')">
+        <span class="num">7</span>
+        <span><span class="t">Campanha especial do mês</span><span class="d">Ofertas extras quando houver</span></span>
         <span class="arrow">›</span>
       </button>
     </div>
@@ -406,6 +464,10 @@
     <div class="card">
       <h3>Exemplo com número</h3>
       <p>Parrilha de R$ 2.000 no Pix do palpite. Com o 10% aplicado, vira R$ 1.800. Paga R$ 900 de entrada agora e R$ 900 só na entrega. Acertou o placar? Não paga os R$ 900 finais. Leva por R$ 900.</p>
+    </div>
+    <div class="card">
+      <h3>Prazo de entrega</h3>
+      <p>O prazo é de <span class="hl">30 dias corridos mais o transporte</span>. Sempre deixe isso claro pro cliente na hora da venda, pra não gerar expectativa errada de prazo.</p>
     </div>
   </div>
 
@@ -474,18 +536,21 @@
       <div class="round">Rodada 1</div>
       <div class="match">Brasil x Marrocos</div>
       <div class="when">Sábado, 13/06, 19h (horário de Brasília)</div>
+      <div class="where">MetLife Stadium, Nova York/Nova Jersey</div>
       <div class="win">Janela de venda: <b>de agora até o apito inicial</b> do jogo, em 13/06.</div>
     </div>
     <div class="game">
       <div class="round">Rodada 2</div>
       <div class="match">Brasil x Haiti</div>
       <div class="when">Sexta, 19/06, 21h30 (horário de Brasília)</div>
+      <div class="where">Lincoln Financial Field, Filadélfia</div>
       <div class="win">Janela de venda: <b>de 14/06 até o apito inicial</b> do jogo, em 19/06.</div>
     </div>
     <div class="game">
       <div class="round">Rodada 3</div>
       <div class="match">Brasil x Escócia</div>
       <div class="when">Quarta, 24/06, 19h (horário de Brasília)</div>
+      <div class="where">Hard Rock Stadium, Miami</div>
       <div class="win">Janela de venda: <b>de 20/06 até o apito inicial</b> do jogo, em 24/06.</div>
     </div>
     <p class="intro" style="margin-top:18px;">Cada rodada usa o adversário daquele jogo. Confira sempre se o palpite que o cliente deu é do jogo da rodada certa.</p>
@@ -530,13 +595,23 @@
       <input id="f_vend" type="text" placeholder="Seu nome">
     </div>
     <div class="field">
+      <label>Data da compra</label>
+      <input id="f_compra" type="text" placeholder="Ex: 10/06">
+    </div>
+    <div class="field">
       <label>Previsão de entrega</label>
       <input id="f_entrega" type="text" placeholder="Ex: 30/06">
+      <span class="hint">Prazo padrão: 30 dias corridos mais transporte.</span>
+    </div>
+    <div class="field">
+      <label>Faca de brinde</label>
+      <label class="check"><input id="f_faca" type="checkbox"> <span>Sim, deu faca de brinde</span></label>
     </div>
 
     <button class="gen" onclick="gerar()">Gerar ficha</button>
 
     <div class="output" id="out">
+      <div class="savestatus" id="savestatus"></div>
       <pre id="outtext"></pre>
       <button class="copy" id="copybtn" onclick="copiar()">Copiar texto</button>
     </div>
@@ -576,10 +651,27 @@
     </div>
   </div>
 
+  <!-- ESPECIAL -->
+  <div class="screen" id="especial">
+    <button class="back" onclick="go('home')">‹ Voltar</button>
+    <h2 class="title">Campanha <em>especial do mês</em></h2>
+    <div class="empty">
+      <div class="empty-icon">—</div>
+      <p>Não há campanha especial aberta no momento.</p>
+      <span>Quando tiver uma oferta extra, ela aparece aqui.</span>
+    </div>
+  </div>
+
   <div class="foot">Uso interno, equipe de vendas, junho 2026</div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+  // --- Conexao com o banco (chave publica, pode ficar no codigo) ---
+  const SB_URL = 'https://uxyibhyggqcgpzypmusp.supabase.co';
+  const SB_KEY = 'sb_publishable_NNvLZhRBMI-l9l9uWGWNlQ_BAiZ8eMl';
+  const sb = window.supabase.createClient(SB_URL, SB_KEY);
+
   function go(id){
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
@@ -594,7 +686,9 @@
     const adv  = document.getElementById('f_adv').value.trim();
     const prod = document.getElementById('f_prod').value.trim() || '(não informado)';
     const vend = document.getElementById('f_vend').value.trim() || '(não informado)';
+    const compra = document.getElementById('f_compra').value.trim() || '(não informado)';
     const entrega = document.getElementById('f_entrega').value.trim() || '(não informado)';
+    const faca = document.getElementById('f_faca').checked ? 'Sim' : 'Não';
 
     if(br==='' || adv===''){
       alert('Preencha o palpite do placar (Brasil e adversário).');
@@ -606,11 +700,13 @@
 '------------------------------\n' +
 'Cliente: ' + nome + '\n' +
 'Contato: ' + tel + '\n' +
+'Data da compra: ' + compra + '\n' +
 'Jogo: ' + jogo + '\n' +
 'Palpite: Brasil ' + br + ' x ' + adv + ' Adversário\n' +
 'Parrilha: ' + prod + '\n' +
 'Vendedor: ' + vend + '\n' +
 'Entrega prevista: ' + entrega + '\n' +
+'Faca de brinde: ' + faca + '\n' +
 'Modalidade: Pix do palpite (50% entrada paga)';
 
     document.getElementById('outtext').textContent = txt;
@@ -618,6 +714,37 @@
     const b = document.getElementById('copybtn');
     b.classList.remove('done'); b.textContent='Copiar texto';
     document.getElementById('out').scrollIntoView({behavior:'smooth',block:'nearest'});
+
+    // grava no banco (sem travar o vendedor: o texto ja esta na tela)
+    const jogoSel = document.getElementById('f_jogo');
+    salvarPalpite({
+      cliente_nome: nome === '(não informado)' ? 'Sem nome' : nome,
+      cliente_contato: tel === '(não informado)' ? null : tel,
+      data_compra: compra === '(não informado)' ? null : compra,
+      rodada: jogoSel.selectedIndex + 1,
+      jogo: jogo,
+      palpite_brasil: parseInt(br, 10),
+      palpite_adversario: parseInt(adv, 10),
+      parrilla: prod === '(não informado)' ? null : prod,
+      vendedor: vend === '(não informado)' ? null : vend,
+      entrega_prevista: entrega === '(não informado)' ? null : entrega,
+      faca_brinde: document.getElementById('f_faca').checked
+    });
+  }
+
+  async function salvarPalpite(dados){
+    const s = document.getElementById('savestatus');
+    s.className = 'savestatus show saving';
+    s.textContent = 'Salvando no sistema...';
+    try{
+      const { error } = await sb.from('palpites').insert(dados);
+      if(error) throw error;
+      s.className = 'savestatus show ok';
+      s.textContent = 'Palpite salvo no sistema. Pode mandar o texto pro responsável também.';
+    }catch(e){
+      s.className = 'savestatus show err';
+      s.textContent = 'Não consegui salvar no sistema agora. Sem problema: copie o texto abaixo e mande no WhatsApp para o responsável.';
+    }
   }
 
   function copiar(){

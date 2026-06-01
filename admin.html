@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#121110">
+<title>Admin - Campanha do Mestre</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap');
+  :root{
+    --bg:#121110; --panel:#1b1917; --panel2:#221f1c; --line:#332e29;
+    --ember:#d7642a; --ember-soft:#e8893f; --gold:#c9a25a;
+    --text:#ece6df; --muted2:#a89c8f; --green:#5b8a4f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    background-image:radial-gradient(circle at 50% -10%, #2a2420 0%, #121110 55%);
+    color:var(--text); font-family:'Barlow',sans-serif; min-height:100vh;
+    padding:22px 16px 60px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;}
+  .topbar{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+  .flame{
+    width:30px;height:30px;flex:none;
+    background:linear-gradient(180deg,var(--ember-soft),var(--ember));
+    border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;transform:rotate(-3deg);
+    box-shadow:0 0 18px rgba(215,100,42,.4);
+  }
+  .topbar h1{font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:.04em;
+    font-size:18px;text-transform:uppercase;line-height:1;}
+  .topbar span{font-size:12px;color:var(--muted2);}
+  .logout{margin-left:auto;background:none;border:1px solid var(--line);border-radius:8px;
+    padding:8px 13px;color:var(--muted2);font-family:'Oswald',sans-serif;font-size:12.5px;
+    letter-spacing:.04em;text-transform:uppercase;cursor:pointer;}
+  .logout:hover{border-color:var(--ember);color:var(--ember-soft);}
+
+  h2.sec{font-family:'Oswald',sans-serif;font-weight:700;font-size:18px;text-transform:uppercase;
+    letter-spacing:.03em;margin:26px 0 13px;color:var(--text);}
+  h2.sec em{color:var(--ember);font-style:normal;}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:17px 18px;margin-bottom:13px;}
+  label.lbl{display:block;font-family:'Oswald',sans-serif;font-size:12.5px;letter-spacing:.05em;
+    text-transform:uppercase;color:var(--muted2);margin-bottom:5px;}
+  input,select{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:9px;
+    padding:11px 12px;color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;}
+  input:focus,select:focus{outline:none;border-color:var(--ember);}
+  .btn{background:linear-gradient(180deg,var(--ember-soft),var(--ember));border:none;border-radius:10px;
+    padding:13px 16px;cursor:pointer;font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;
+    letter-spacing:.04em;text-transform:uppercase;color:#1a0f08;}
+  .btn:active{transform:scale(.99);}
+  .btn.ghost{background:none;border:1px solid var(--ember);color:var(--ember-soft);}
+  .btn.ghost:hover{background:rgba(215,100,42,.1);}
+
+  /* login */
+  #login{max-width:380px;margin:60px auto 0;}
+  #login .field{margin-bottom:13px;}
+  #login .btn{width:100%;margin-top:6px;}
+  .loginerr{display:none;margin-top:12px;font-size:13.5px;color:var(--ember-soft);text-align:center;}
+  .loginerr.show{display:block;}
+
+  /* resultados */
+  .resgrid{display:grid;gap:11px;}
+  .resrow{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 15px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .resrow.done{border-color:var(--green);}
+  .resrow .rj{font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;flex:1;min-width:150px;}
+  .resrow .rj small{display:block;font-family:'Barlow';font-weight:400;color:var(--muted2);font-size:12px;text-transform:none;letter-spacing:0;}
+  .resrow input{width:56px;text-align:center;padding:9px 6px;}
+  .resrow .x{color:var(--muted2);font-family:'Oswald';}
+  .resrow .btn{padding:9px 13px;font-size:13px;}
+  .resrow .badge{font-family:'Oswald',sans-serif;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--green);border:1px solid var(--green);border-radius:6px;padding:3px 8px;}
+
+  /* filtros */
+  .filters{display:flex;gap:11px;flex-wrap:wrap;margin-bottom:14px;}
+  .filters > div{flex:1;min-width:150px;}
+
+  /* tabela */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:13px;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px;}
+  th{font-family:'Oswald',sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--gold);text-align:left;padding:12px 13px;border-bottom:1px solid var(--line);background:var(--panel2);white-space:nowrap;}
+  td{padding:11px 13px;border-bottom:1px solid var(--line);color:#ddd5cc;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr.winner td{background:rgba(91,138,79,.12);}
+  .wtag{font-family:'Oswald',sans-serif;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+    color:#8fc47f;border:1px solid var(--green);border-radius:5px;padding:2px 6px;white-space:nowrap;}
+  .pal{font-family:'Oswald',sans-serif;font-weight:600;white-space:nowrap;}
+  .muted{color:var(--muted2);}
+  .count{font-size:13px;color:var(--muted2);margin-bottom:10px;}
+  .count b{color:var(--ember-soft);}
+  .empty{text-align:center;padding:40px 20px;color:var(--muted2);}
+  .toolsrow{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+  .toolsrow .btn{padding:10px 14px;font-size:13px;}
+  .spin{color:var(--muted2);font-size:14px;padding:30px;text-align:center;}
+  #app{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="flame"></div>
+    <div><h1>Campanha do Mestre</h1><span>Painel do administrador</span></div>
+    <button class="logout" id="logoutbtn" onclick="sair()" style="display:none;">Sair</button>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="login">
+    <div class="card">
+      <div class="field">
+        <label class="lbl">E-mail</label>
+        <input id="email" type="email" autocomplete="username" placeholder="seu@email.com">
+      </div>
+      <div class="field">
+        <label class="lbl">Senha</label>
+        <input id="senha" type="password" autocomplete="current-password" placeholder="sua senha">
+      </div>
+      <button class="btn" onclick="entrar()">Entrar</button>
+      <div class="loginerr" id="loginerr">E-mail ou senha incorretos.</div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+    <h2 class="sec">Placar <em>real das rodadas</em></h2>
+    <div class="resgrid" id="resgrid"></div>
+
+    <h2 class="sec">Palpites <em>recebidos</em></h2>
+    <div class="filters">
+      <div>
+        <label class="lbl">Rodada</label>
+        <select id="fil_rodada" onchange="render()">
+          <option value="">Todas</option>
+          <option value="1">Rodada 1 - Marrocos</option>
+          <option value="2">Rodada 2 - Haiti</option>
+          <option value="3">Rodada 3 - Escócia</option>
+        </select>
+      </div>
+      <div>
+        <label class="lbl">Vendedor</label>
+        <input id="fil_vend" type="text" placeholder="Filtrar por vendedor" oninput="render()">
+      </div>
+      <div>
+        <label class="lbl">Mostrar</label>
+        <select id="fil_win" onchange="render()">
+          <option value="">Todos os palpites</option>
+          <option value="1">Só os ganhadores</option>
+        </select>
+      </div>
+    </div>
+    <div class="toolsrow">
+      <button class="btn ghost" onclick="carregar()">Atualizar</button>
+      <button class="btn ghost" onclick="exportarCSV()">Baixar planilha (CSV)</button>
+    </div>
+    <div class="count" id="count"></div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th><th>Contato</th><th>Rodada</th><th>Palpite</th>
+            <th>Parrilha</th><th>Vendedor</th><th>Compra</th><th>Faca</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"><tr><td colspan="9" class="spin">Carregando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SB_URL = 'https://uxyibhyggqcgpzypmusp.supabase.co';
+  const SB_KEY = 'sb_publishable_NNvLZhRBMI-l9l9uWGWNlQ_BAiZ8eMl';
+  const sb = window.supabase.createClient(SB_URL, SB_KEY);
+
+  let PALPITES = [];
+  let RESULTADOS = {}; // rodada -> {gols_brasil, gols_adversario, definido, jogo}
+
+  // --- sessao ---
+  async function init(){
+    const { data:{ session } } = await sb.auth.getSession();
+    if(session){ mostrarApp(); } else { mostrarLogin(); }
+  }
+  function mostrarLogin(){
+    document.getElementById('login').style.display='block';
+    document.getElementById('app').style.display='none';
+    document.getElementById('logoutbtn').style.display='none';
+  }
+  async function mostrarApp(){
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('logoutbtn').style.display='inline-block';
+    await carregar();
+  }
+  async function entrar(){
+    const email = document.getElementById('email').value.trim();
+    const senha = document.getElementById('senha').value;
+    const err = document.getElementById('loginerr');
+    err.classList.remove('show');
+    const { error } = await sb.auth.signInWithPassword({ email, password: senha });
+    if(error){ err.classList.add('show'); return; }
+    mostrarApp();
+  }
+  async function sair(){ await sb.auth.signOut(); mostrarLogin(); }
+
+  // --- dados ---
+  async function carregar(){
+    document.getElementById('tbody').innerHTML='<tr><td colspan="9" class="spin">Carregando...</td></tr>';
+    const [pRes, rRes] = await Promise.all([
+      sb.from('palpites').select('*').order('created_at',{ascending:false}),
+      sb.from('resultados').select('*').order('rodada')
+    ]);
+    if(pRes.error || rRes.error){
+      document.getElementById('tbody').innerHTML='<tr><td colspan="9" class="empty">Erro ao carregar. Tente Atualizar.</td></tr>';
+      return;
+    }
+    PALPITES = pRes.data || [];
+    RESULTADOS = {};
+    (rRes.data||[]).forEach(r=>{ RESULTADOS[r.rodada]=r; });
+    montarResultados(rRes.data||[]);
+    render();
+  }
+
+  function montarResultados(lista){
+    const g = document.getElementById('resgrid');
+    g.innerHTML='';
+    lista.forEach(r=>{
+      const div=document.createElement('div');
+      div.className='resrow'+(r.definido?' done':'');
+      div.innerHTML=
+        '<div class="rj">'+escapeHtml(r.jogo||('Rodada '+r.rodada))+'<small>Rodada '+r.rodada+'</small></div>'+
+        '<input type="number" min="0" id="g_br_'+r.rodada+'" value="'+(r.gols_brasil??'')+'" placeholder="0">'+
+        '<span class="x">x</span>'+
+        '<input type="number" min="0" id="g_adv_'+r.rodada+'" value="'+(r.gols_adversario??'')+'" placeholder="0">'+
+        '<button class="btn" onclick="salvarResultado('+r.rodada+')">Salvar placar</button>'+
+        (r.definido?'<span class="badge">Definido</span>':'');
+      g.appendChild(div);
+    });
+  }
+
+  async function salvarResultado(rodada){
+    const br=document.getElementById('g_br_'+rodada).value;
+    const adv=document.getElementById('g_adv_'+rodada).value;
+    if(br===''||adv===''){ alert('Preencha os dois gols.'); return; }
+    const { error } = await sb.from('resultados')
+      .update({ gols_brasil:parseInt(br,10), gols_adversario:parseInt(adv,10), definido:true, updated_at:new Date().toISOString() })
+      .eq('rodada', rodada);
+    if(error){ alert('Não consegui salvar o placar. Tente de novo.'); return; }
+    await carregar();
+  }
+
+  // --- ganhador ---
+  function isWinner(p){
+    const r = RESULTADOS[p.rodada];
+    if(!r || !r.definido) return false;
+    return p.palpite_brasil===r.gols_brasil && p.palpite_adversario===r.gols_adversario;
+  }
+
+  function render(){
+    const fr=document.getElementById('fil_rodada').value;
+    const fv=document.getElementById('fil_vend').value.trim().toLowerCase();
+    const fw=document.getElementById('fil_win').value;
+    let lista=PALPITES.slice();
+    if(fr) lista=lista.filter(p=>String(p.rodada)===fr);
+    if(fv) lista=lista.filter(p=>(p.vendedor||'').toLowerCase().includes(fv));
+    if(fw==='1') lista=lista.filter(isWinner);
+
+    const tb=document.getElementById('tbody');
+    const ganhadores=lista.filter(isWinner).length;
+    document.getElementById('count').innerHTML=
+      lista.length+' palpite(s)'+(ganhadores?' &middot; <b>'+ganhadores+' ganhador(es)</b>':'');
+
+    if(!lista.length){ tb.innerHTML='<tr><td colspan="9" class="empty">Nenhum palpite por aqui ainda.</td></tr>'; return; }
+
+    tb.innerHTML='';
+    lista.forEach(p=>{
+      const win=isWinner(p);
+      const tr=document.createElement('tr');
+      if(win) tr.className='winner';
+      tr.innerHTML=
+        '<td>'+escapeHtml(p.cliente_nome||'')+'</td>'+
+        '<td class="muted">'+escapeHtml(p.cliente_contato||'-')+'</td>'+
+        '<td>R'+p.rodada+'</td>'+
+        '<td><span class="pal">'+p.palpite_brasil+' x '+p.palpite_adversario+'</span></td>'+
+        '<td>'+escapeHtml(p.parrilla||'-')+'</td>'+
+        '<td>'+escapeHtml(p.vendedor||'-')+'</td>'+
+        '<td class="muted">'+escapeHtml(p.data_compra||'-')+'</td>'+
+        '<td>'+(p.faca_brinde?'Sim':'Não')+'</td>'+
+        '<td>'+(win?'<span class="wtag">Ganhou</span>':'')+'</td>';
+      tb.appendChild(tr);
+    });
+  }
+
+  function exportarCSV(){
+    const cols=['cliente_nome','cliente_contato','rodada','jogo','palpite_brasil','palpite_adversario','parrilla','vendedor','data_compra','entrega_prevista','faca_brinde','ganhador','created_at'];
+    const head=['Cliente','Contato','Rodada','Jogo','Palpite Brasil','Palpite Adversario','Parrilha','Vendedor','Data compra','Entrega prevista','Faca brinde','Ganhador','Registrado em'];
+    const rows=PALPITES.map(p=>cols.map(c=>{
+      let v;
+      if(c==='ganhador') v=isWinner(p)?'SIM':'';
+      else if(c==='faca_brinde') v=p.faca_brinde?'Sim':'Não';
+      else v=p[c]==null?'':p[c];
+      v=String(v).replace(/"/g,'""');
+      return '"'+v+'"';
+    }).join(','));
+    const csv='﻿'+head.map(h=>'"'+h+'"').join(',')+'\n'+rows.join('\n');
+    const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download='palpites-campanha-do-mestre.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  document.getElementById('senha').addEventListener('keydown',e=>{ if(e.key==='Enter') entrar(); });
+  init();
+</script>
+</body>
+</html>
