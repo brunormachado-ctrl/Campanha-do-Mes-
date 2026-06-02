@@ -179,7 +179,6 @@
 
   /* menu cards (grade de 2 colunas, conteudo centralizado) */
   .menu{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .menu .item:last-child{grid-column:1 / -1;}
   .item{
     position:relative;
     background:linear-gradient(180deg,#1a1413 0%,#130f0e 100%);
@@ -416,6 +415,11 @@
         <span class="num">7</span>
         <span class="t">Campanha especial do mês</span>
         <span class="d">Ofertas extras quando houver</span>
+      </button>
+      <button class="item" onclick="go('regulamento')">
+        <span class="num">8</span>
+        <span class="t">Regulamento</span>
+        <span class="d">Para copiar e enviar ao cliente</span>
       </button>
     </div>
     <button class="savehint" onclick="go('salvar')">Como salvar este guia na tela do seu celular ›</button>
@@ -704,6 +708,49 @@
     </div>
   </div>
 
+  <!-- REGULAMENTO -->
+  <div class="screen" id="regulamento">
+    <button class="back" onclick="go('home')">‹ Voltar</button>
+    <h2 class="title"><em>Regulamento</em></h2>
+    <p class="intro">Texto pronto para o cliente. Toque em copiar e cole no WhatsApp dele.</p>
+    <div class="output show" id="regout">
+      <pre id="regtext">REGULAMENTO - PROMOÇÃO DA COPA
+Mestre Parrillero - Junho de 2026
+
+1. VALIDADE
+A promoção é válida durante o mês de junho de 2026 e acompanha os jogos do Brasil na fase de grupos da Copa. A cada jogo do Brasil abre uma rodada.
+
+2. FORMAS DE PAGAMENTO
+- Cartão: em até 18x sem juros.
+- Pix à vista: 10% de desconto.
+- Pix do palpite: você paga 50% de entrada para garantir a sua parrilha e crava o placar do jogo do Brasil daquela rodada. Os outros 50% são pagos quando a parrilha fica pronta. Se você acertar o placar exato, não paga essa segunda metade. O desconto de 10% do Pix também vale nessa modalidade.
+
+3. COMO FUNCIONA O PALPITE
+- Você crava o placar do jogo do Brasil da rodada: quantos gols o Brasil faz e quantos gols o adversário faz.
+- Vale o placar do tempo normal mais acréscimos. Prorrogação e pênaltis não contam.
+- O palpite tem que bater exatamente com o resultado. Chegou perto não vale.
+- Um palpite por parrilha comprada.
+- O palpite é registrado no ato da compra.
+
+4. PRAZOS
+- A compra e a entrada de 50% devem ser concluídas até o apito inicial do jogo da rodada. Depois do início do jogo, não é mais possível entrar naquela rodada.
+- Prazo de produção e entrega: 30 dias corridos mais o transporte.
+
+5. JOGOS E RODADAS (horário de Brasília)
+- Rodada 1: Brasil x Marrocos, sábado 13/06.
+- Rodada 2: Brasil x Haiti, sexta 19/06.
+- Rodada 3: Brasil x Escócia, quarta 24/06.
+
+6. PRODUTOS COM PRODUÇÃO RÁPIDA
+Em produtos que ficam prontos e são despachados antes do jogo (por exemplo, o Grill Elevação), o pagamento é feito integralmente para o envio. Se o palpite acertar o placar, a segunda metade (50%) é devolvida por estorno após o jogo.
+
+7. As demais condições são combinadas no ato da venda com o vendedor.
+
+Mestre Parrillero</pre>
+      <button class="copy" id="regcopybtn" onclick="copiarReg()">Copiar regulamento</button>
+    </div>
+  </div>
+
   <div class="foot">Uso interno, equipe de vendas, junho 2026</div>
 </div>
 
@@ -797,6 +844,21 @@
       navigator.clipboard.writeText(txt).then(done).catch(fallback);
     } else { fallback(); }
     function fallback(){
+      const ta=document.createElement('textarea');
+      ta.value=txt; document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy');done();}catch(e){alert('Selecione e copie manualmente.');}
+      document.body.removeChild(ta);
+    }
+  }
+
+  function copiarReg(){
+    const txt = document.getElementById('regtext').textContent;
+    const b = document.getElementById('regcopybtn');
+    const done = ()=>{ b.classList.add('done'); b.textContent='Regulamento copiado'; };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(done).catch(fb);
+    } else { fb(); }
+    function fb(){
       const ta=document.createElement('textarea');
       ta.value=txt; document.body.appendChild(ta); ta.select();
       try{document.execCommand('copy');done();}catch(e){alert('Selecione e copie manualmente.');}
