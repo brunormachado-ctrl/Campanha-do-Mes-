@@ -179,6 +179,7 @@
 
   /* menu cards (grade de 2 colunas, conteudo centralizado) */
   .menu{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .menu .item:nth-child(odd):last-child{grid-column:1 / -1;}
   .item{
     position:relative;
     background:linear-gradient(180deg,#1a1413 0%,#130f0e 100%);
@@ -420,6 +421,11 @@
         <span class="num">8</span>
         <span class="t">Regulamento</span>
         <span class="d">Para copiar e enviar ao cliente</span>
+      </button>
+      <button class="item" onclick="go('formaspgto')">
+        <span class="num">9</span>
+        <span class="t">Formas de pagamento</span>
+        <span class="d">Mensagem rápida pra enviar ao cliente</span>
       </button>
     </div>
     <button class="savehint" onclick="go('salvar')">Como salvar este guia na tela do seu celular ›</button>
@@ -751,6 +757,26 @@ Mestre Parrillero</pre>
     </div>
   </div>
 
+  <!-- FORMAS DE PAGAMENTO -->
+  <div class="screen" id="formaspgto">
+    <button class="back" onclick="go('home')">‹ Voltar</button>
+    <h2 class="title">Formas <em>de pagamento</em></h2>
+    <p class="intro">Mensagem pronta pro cliente. Toque em copiar e cole no WhatsApp dele.</p>
+    <div class="output show" id="pgtoout">
+      <pre id="pgtotext">MESTRE PARRILLERO - PROMOÇÃO DA COPA
+
+A cada jogo do Brasil abre uma rodada da promoção. Formas de pagamento:
+
+- Cartão (não participa do palpite): até 18x sem juros.
+- Pix (participa do palpite): 50% de entrada e 50% quando a parrilha fica pronta. Você crava o placar do jogo do Brasil e, se acertar, não paga a segunda metade.
+
+Prazo: 30 dias corridos mais o transporte.
+
+Quer dar o seu palpite?</pre>
+      <button class="copy" id="pgtocopybtn" onclick="copiarPgto()">Copiar mensagem</button>
+    </div>
+  </div>
+
   <div class="foot">Uso interno, equipe de vendas, junho 2026</div>
 </div>
 
@@ -855,6 +881,21 @@ Mestre Parrillero</pre>
     const txt = document.getElementById('regtext').textContent;
     const b = document.getElementById('regcopybtn');
     const done = ()=>{ b.classList.add('done'); b.textContent='Regulamento copiado'; };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(done).catch(fb);
+    } else { fb(); }
+    function fb(){
+      const ta=document.createElement('textarea');
+      ta.value=txt; document.body.appendChild(ta); ta.select();
+      try{document.execCommand('copy');done();}catch(e){alert('Selecione e copie manualmente.');}
+      document.body.removeChild(ta);
+    }
+  }
+
+  function copiarPgto(){
+    const txt = document.getElementById('pgtotext').textContent;
+    const b = document.getElementById('pgtocopybtn');
+    const done = ()=>{ b.classList.add('done'); b.textContent='Mensagem copiada'; };
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(txt).then(done).catch(fb);
     } else { fb(); }
