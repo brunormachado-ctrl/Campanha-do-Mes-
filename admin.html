@@ -90,6 +90,28 @@
     color:var(--ember-soft);border:1px solid var(--line);background:none;border-radius:5px;
     padding:4px 9px;cursor:pointer;white-space:nowrap;transition:border-color .15s,color .15s;}
   .delbtn:hover{border-color:var(--ember);color:var(--ember);}
+  .editbtn{font-family:'Oswald',sans-serif;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--gold);border:1px solid var(--line);background:none;border-radius:5px;
+    padding:4px 9px;cursor:pointer;white-space:nowrap;transition:border-color .15s,color .15s;}
+  .editbtn:hover{border-color:var(--gold);color:#ffd9a0;}
+
+  /* janela de edicao */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;
+    display:none;align-items:flex-start;justify-content:center;padding:28px 16px;overflow-y:auto;}
+  .modal-overlay.show{display:flex;}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;width:100%;max-width:460px;}
+  .modal-title{font-family:'Oswald',sans-serif;font-weight:700;font-size:18px;letter-spacing:.03em;
+    text-transform:uppercase;color:var(--ember-soft);margin-bottom:16px;}
+  .mfield{margin-bottom:12px;}
+  .mfield label{display:block;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.05em;
+    text-transform:uppercase;color:var(--muted2);margin-bottom:5px;}
+  .mscore{display:flex;align-items:center;gap:10px;}
+  .mscore input{width:72px;text-align:center;}
+  .mscore span{color:var(--muted2);font-family:'Oswald',sans-serif;}
+  .mcheck{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--text);margin:8px 0 18px;cursor:pointer;}
+  .mcheck input{width:18px;height:18px;accent-color:var(--ember);}
+  .mbtns{display:flex;gap:10px;}
+  .mbtns .btn{flex:1;}
   .pal{font-family:'Oswald',sans-serif;font-weight:600;white-space:nowrap;}
   .muted{color:var(--muted2);}
   .count{font-size:13px;color:var(--muted2);margin-bottom:10px;}
@@ -168,6 +190,35 @@
         </thead>
         <tbody id="tbody"><tr><td colspan="9" class="spin">Carregando...</td></tr></tbody>
       </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="editoverlay">
+  <div class="modal">
+    <div class="modal-title">Editar palpite</div>
+    <div class="mfield"><label>Nome do cliente</label><input id="e_nome" type="text"></div>
+    <div class="mfield"><label>Telefone / contato</label><input id="e_contato" type="text"></div>
+    <div class="mfield"><label>Jogo da rodada</label>
+      <select id="e_jogo">
+        <option>Brasil x Marrocos, 13/06</option>
+        <option>Brasil x Haiti, 19/06</option>
+        <option>Brasil x Escócia, 24/06</option>
+      </select>
+    </div>
+    <div class="mfield"><label>Palpite (Brasil x Adversário)</label>
+      <div class="mscore">
+        <input id="e_br" type="number" min="0"><span>x</span><input id="e_adv" type="number" min="0">
+      </div>
+    </div>
+    <div class="mfield"><label>Modelo / valor da parrilha</label><input id="e_parrilla" type="text"></div>
+    <div class="mfield"><label>Vendedor responsável</label><input id="e_vendedor" type="text"></div>
+    <div class="mfield"><label>Data da compra</label><input id="e_compra" type="text"></div>
+    <div class="mfield"><label>Previsão de entrega</label><input id="e_entrega" type="text"></div>
+    <label class="mcheck"><input id="e_faca" type="checkbox"> Faca de brinde</label>
+    <div class="mbtns">
+      <button class="btn ghost" onclick="fecharEdicao()">Cancelar</button>
+      <button class="btn" onclick="salvarEdicao()">Salvar</button>
     </div>
   </div>
 </div>
@@ -261,6 +312,52 @@
     await carregar();
   }
 
+  let editId = null;
+  function abrirEdicao(id){
+    const p = PALPITES.find(x => x.id === id);
+    if(!p) return;
+    editId = id;
+    document.getElementById('e_nome').value = p.cliente_nome || '';
+    document.getElementById('e_contato').value = p.cliente_contato || '';
+    document.getElementById('e_jogo').selectedIndex = Math.min(Math.max((p.rodada||1)-1,0),2);
+    document.getElementById('e_br').value = p.palpite_brasil;
+    document.getElementById('e_adv').value = p.palpite_adversario;
+    document.getElementById('e_parrilla').value = p.parrilla || '';
+    document.getElementById('e_vendedor').value = p.vendedor || '';
+    document.getElementById('e_compra').value = p.data_compra || '';
+    document.getElementById('e_entrega').value = p.entrega_prevista || '';
+    document.getElementById('e_faca').checked = !!p.faca_brinde;
+    document.getElementById('editoverlay').classList.add('show');
+  }
+  function fecharEdicao(){
+    document.getElementById('editoverlay').classList.remove('show');
+    editId = null;
+  }
+  async function salvarEdicao(){
+    if(!editId) return;
+    const sel = document.getElementById('e_jogo');
+    const br = document.getElementById('e_br').value;
+    const adv = document.getElementById('e_adv').value;
+    if(br==='' || adv===''){ alert('Preencha o palpite (Brasil e adversário).'); return; }
+    const dados = {
+      cliente_nome: document.getElementById('e_nome').value.trim() || 'Sem nome',
+      cliente_contato: document.getElementById('e_contato').value.trim() || null,
+      rodada: sel.selectedIndex + 1,
+      jogo: sel.value,
+      palpite_brasil: parseInt(br, 10),
+      palpite_adversario: parseInt(adv, 10),
+      parrilla: document.getElementById('e_parrilla').value.trim() || null,
+      vendedor: document.getElementById('e_vendedor').value.trim() || null,
+      data_compra: document.getElementById('e_compra').value.trim() || null,
+      entrega_prevista: document.getElementById('e_entrega').value.trim() || null,
+      faca_brinde: document.getElementById('e_faca').checked
+    };
+    const { error } = await sb.from('palpites').update(dados).eq('id', editId);
+    if(error){ alert('Não consegui salvar a edição. Tente de novo.'); return; }
+    fecharEdicao();
+    await carregar();
+  }
+
   // --- ganhador ---
   function isWinner(p){
     const r = RESULTADOS[p.rodada];
@@ -298,7 +395,7 @@
         '<td>'+escapeHtml(p.vendedor||'-')+'</td>'+
         '<td class="muted">'+escapeHtml(p.data_compra||'-')+'</td>'+
         '<td>'+(p.faca_brinde?'Sim':'Não')+'</td>'+
-        '<td>'+(win?'<span class="wtag">Ganhou</span> ':'')+'<button class="delbtn" onclick="excluir(\''+p.id+'\')">Excluir</button></td>';
+        '<td>'+(win?'<span class="wtag">Ganhou</span> ':'')+'<button class="editbtn" onclick="abrirEdicao(\''+p.id+'\')">Editar</button> <button class="delbtn" onclick="excluir(\''+p.id+'\')">Excluir</button></td>';
       tb.appendChild(tr);
     });
   }

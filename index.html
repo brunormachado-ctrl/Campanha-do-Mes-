@@ -869,8 +869,13 @@ Quer dar o seu palpite?</pre>
     s.className = 'savestatus show saving';
     s.textContent = 'Salvando no sistema...';
     try{
-      const { error } = await sb.from('palpites').insert(dados);
-      if(error) throw error;
+      let { error } = await sb.from('palpites').insert(dados);
+      if(error){
+        // sistema pode estar "acordando"; espera e tenta mais uma vez
+        await new Promise(r => setTimeout(r, 800));
+        ({ error } = await sb.from('palpites').insert(dados));
+        if(error) throw error;
+      }
       s.className = 'savestatus show ok';
       s.textContent = 'Palpite salvo no sistema. Pode mandar o texto pro responsável também.';
     }catch(e){
