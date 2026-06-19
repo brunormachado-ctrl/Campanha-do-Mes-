@@ -34,21 +34,41 @@
   }
   .wrap{max-width:560px;margin:0 auto;}
 
-  /* HERO */
+  /* CABECALHO */
+  .brandbar{display:flex;justify-content:center;align-items:center;margin:2px 0 16px;}
+  .brandlogo{width:300px;max-width:82%;height:auto;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5));}
+  .hero-toptitle{
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    margin:4px 0 12px;
+    font-family:'Oswald',sans-serif;font-weight:700;font-size:21px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--ember-soft);
+    text-shadow:0 1px 10px rgba(215,100,42,.25);
+  }
+  .hero-toptitle::before,.hero-toptitle::after{
+    content:"";height:1px;width:42px;
+    background:linear-gradient(90deg,transparent,var(--ember));
+  }
+  .hero-toptitle::after{background:linear-gradient(90deg,var(--ember),transparent);}
+
+  /* ARTE DE DESTAQUE (placeholder ate chegar a arte da Troca Premiada) */
   .hero-art{
-    height:120px;border-radius:16px;margin-bottom:16px;border:1px solid var(--line);
+    height:150px;border-radius:16px;margin-bottom:16px;border:1px solid var(--line);
     background:radial-gradient(120% 140% at 50% 0%, #2a100e 0%, #1a1413 55%, #0d0c0b 100%);
     display:grid;place-items:center;position:relative;overflow:hidden;
   }
+  .hero-art img{width:100%;height:100%;object-fit:cover;}
   .hero-art::after{
-    content:"";position:absolute;inset:0;
+    content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(60% 80% at 50% 120%, rgba(225,43,34,.35), transparent 70%);
   }
   .hero-art .grill{
-    position:relative;z-index:1;font-family:'Oswald',sans-serif;font-weight:700;
-    font-size:34px;letter-spacing:.04em;text-transform:uppercase;color:var(--ember-soft);
+    position:relative;z-index:1;text-align:center;
+    font-family:'Oswald',sans-serif;font-weight:700;
+    font-size:32px;letter-spacing:.04em;text-transform:uppercase;color:var(--ember-soft);
     text-shadow:0 2px 18px rgba(225,43,34,.5);
   }
+  .hero-art .grill small{display:block;font-size:12px;letter-spacing:.18em;color:var(--muted2);margin-top:6px;font-weight:400;}
+
   .herotitle{text-align:center;margin-bottom:24px;}
   .herotitle h1{
     font-family:'Oswald',sans-serif;font-weight:700;
@@ -84,7 +104,7 @@
   }
   .savehint:hover{border-color:var(--ember);color:var(--ember-soft);}
 
-  /* SCREENS */
+  /* TELAS */
   .screen{display:none;}
   .screen.active{display:block;animation:fade .25s ease;}
   @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
@@ -95,6 +115,7 @@
   .back:hover{color:var(--ember-soft);}
   .title{font-family:'Oswald',sans-serif;font-weight:600;font-size:24px;text-transform:uppercase;margin-bottom:16px;letter-spacing:.02em;}
   .title em{font-style:normal;color:var(--ember-soft);}
+  .seclabel{font-family:'Oswald',sans-serif;font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--ember-soft);margin:22px 0 10px;}
 
   .card{
     background:var(--panel);border:1px solid var(--line);border-radius:14px;
@@ -166,7 +187,9 @@
 <body>
 <div class="wrap">
 
-  <div class="hero-art"><span class="grill">TROCA PREMIADA</span></div>
+  <div class="brandbar"><img class="brandlogo" src="../mascote.png" alt="Mestre Parrillero"></div>
+  <div class="hero-toptitle">Troca Premiada</div>
+  <div class="hero-art"><span class="grill">TROCA PREMIADA<small>Traga a sua, leve a nova</small></span></div>
   <div class="herotitle">
     <h1>Campanha do Mestre</h1>
     <span>Julho 2026</span>
@@ -176,118 +199,40 @@
   <div class="screen active" id="home">
     <p class="intro">Guia de uso interno, só para a equipe de vendas.</p>
     <div class="menu">
-      <button class="item" onclick="go('resumo')">
+      <button class="item" onclick="go('essencial')">
         <span class="num">1</span>
-        <span class="t">Resumo rápido</span>
-        <span class="d">O essencial em 30 segundos</span>
+        <span class="t">O essencial</span>
+        <span class="d">O que é, o abatimento e a validade</span>
       </button>
-      <button class="item" onclick="go('funciona')">
+      <button class="item" onclick="go('vender')">
         <span class="num">2</span>
-        <span class="t">Como funciona</span>
-        <span class="d">A mecânica da troca, passo a passo</span>
-      </button>
-      <button class="item" onclick="go('tabela')">
-        <span class="num">3</span>
-        <span class="t">Tabela de abatimento</span>
-        <span class="d">Quanto abater conforme a linha</span>
-      </button>
-      <button class="item" onclick="go('abordar')">
-        <span class="num">4</span>
-        <span class="t">Abordagem e dicas</span>
-        <span class="d">Como falar e negociar com o cliente</span>
-      </button>
-      <button class="item" onclick="go('atencao')">
-        <span class="num">5</span>
-        <span class="t">Atenção</span>
-        <span class="d">Regras que não podem passar batido</span>
+        <span class="t">Como vender</span>
+        <span class="d">A mecânica, as falas e as regras</span>
       </button>
       <button class="item" onclick="go('ficha')">
-        <span class="num">6</span>
+        <span class="num">3</span>
         <span class="t">Ficha do cliente</span>
         <span class="d">Anote a troca e mande pro responsável</span>
       </button>
-      <button class="item" onclick="go('regulamento')">
-        <span class="num">7</span>
-        <span class="t">Regulamento</span>
-        <span class="d">Para copiar e enviar ao cliente</span>
-      </button>
-      <button class="item" onclick="go('formaspgto')">
-        <span class="num">8</span>
-        <span class="t">Formas de pagamento</span>
-        <span class="d">Mensagem rápida pra enviar ao cliente</span>
+      <button class="item" onclick="go('textos')">
+        <span class="num">4</span>
+        <span class="t">Textos pro cliente</span>
+        <span class="d">Regulamento e pagamento, copiar e colar</span>
       </button>
     </div>
     <button class="savehint" onclick="go('salvar')">Como salvar este guia na tela do seu celular ›</button>
   </div>
 
-  <!-- RESUMO -->
-  <div class="screen" id="resumo">
+  <!-- 1. O ESSENCIAL -->
+  <div class="screen" id="essencial">
     <button class="back" onclick="go('home')">‹ Voltar</button>
-    <h2 class="title">Resumo <em>rápido</em></h2>
+    <h2 class="title">O <em>essencial</em></h2>
     <div class="card">
       <h3>O que é</h3>
       <p>Troca Premiada, só em julho. O cliente traz a churrasqueira que já tem, a gente avalia e <span class="hl">abate o valor na nova</span>. O abatimento chega a até 20%, conforme a linha que ele escolhe.</p>
     </div>
-    <div class="card">
-      <h3>O abatimento por linha</h3>
-      <ul>
-        <li><span class="hl">Linha Maestro:</span> até 20%.</li>
-        <li><span class="hl">Linha Raiz:</span> até 15%.</li>
-        <li><span class="hl">Linha Essence e Urban:</span> até 10%.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Sua responsabilidade</h3>
-      <p>Anotar na ficha: o modelo que o cliente tem hoje, a foto recebida, o modelo novo que ele quer e o abatimento aplicado. <span class="hl">Sem isso anotado, a troca não vale.</span></p>
-    </div>
-    <div class="card">
-      <h3>A usada volta pra gente</h3>
-      <p>A churrasqueira antiga é recolhida pra recuperação. Combine com o cliente como será a retirada e deixe registrado na ficha.</p>
-    </div>
-    <div class="card">
-      <h3>Validade</h3>
-      <p>Campanha válida durante <span class="hl">julho de 2026</span>. Uma troca por cliente.</p>
-    </div>
-  </div>
 
-  <!-- FUNCIONA -->
-  <div class="screen" id="funciona">
-    <button class="back" onclick="go('home')">‹ Voltar</button>
-    <h2 class="title">Como <em>funciona</em></h2>
-    <div class="card">
-      <h3>A mecânica da troca, passo a passo</h3>
-      <ul>
-        <li>O cliente manda ou mostra uma <span class="hl">foto da churrasqueira que tem hoje</span>.</li>
-        <li>Ele diz <span class="hl">qual modelo novo</span> quer comprar.</li>
-        <li>Você confere a linha desse modelo e aplica o abatimento da tabela.</li>
-        <li>Combina a retirada da usada e fecha a venda.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>O valor da usada é o abatimento da campanha</h3>
-      <p>Não importa o estado nem a idade da churrasqueira do cliente. O "valor de avaliação" dela é, na prática, o <span class="hl">desconto da campanha</span>, dentro do teto da linha que ele escolheu.</p>
-      <p>Por isso o cliente sente que ganhou pela usada, e não que pediu desconto. Use isso a seu favor.</p>
-    </div>
-    <div class="card">
-      <h3>Quanto melhor a linha, maior o abate</h3>
-      <p>O teto sobe conforme a linha: até 10% nas linhas Essence e Urban, até 15% na Raiz e até 20% na Maestro. Isso é proposital: serve pra <span class="hl">puxar o cliente pra um modelo melhor</span>.</p>
-    </div>
-    <div class="card">
-      <h3>Exemplo com número</h3>
-      <p>Cliente quer um modelo da linha Maestro de R$ 5.000 e traz a churrasqueira usada na troca. Com o abatimento de até 20%, ele leva por até <span class="hl">R$ 4.000</span>. A antiga é recolhida pra recuperação.</p>
-    </div>
-    <div class="card">
-      <h3>A usada é recolhida</h3>
-      <p>A churrasqueira antiga volta pra gente pra ser recuperada. Combine a retirada com o cliente (quem leva, quem busca) e registre na ficha.</p>
-    </div>
-  </div>
-
-  <!-- TABELA -->
-  <div class="screen" id="tabela">
-    <button class="back" onclick="go('home')">‹ Voltar</button>
-    <h2 class="title">Tabela <em>de abatimento</em></h2>
-    <p class="intro">O abatimento depende da linha do modelo que o cliente quer. O "até" é a sua margem de negociação: comece mais baixo e suba até o teto só se precisar.</p>
-
+    <div class="seclabel">Abatimento por linha</div>
     <div class="tier top">
       <div><div class="ln">Maestro</div><div class="sub">Premium, controle total</div></div>
       <div class="pct">até 20%</div>
@@ -305,71 +250,68 @@
       <div class="pct">até 10%</div>
     </div>
 
-    <div class="card" style="margin-top:14px;">
-      <h3>Regra de ouro do abatimento</h3>
-      <p>O teto é o limite, não o ponto de partida. Quem dá o máximo na primeira fala não tem pra onde ir depois. Segure o quanto puder e use o restante só pra fechar.</p>
+    <div class="card" style="margin-top:18px;">
+      <h3>Validade e regras rápidas</h3>
+      <ul>
+        <li>Válida durante <span class="hl">julho de 2026</span>. Uma troca por cliente.</li>
+        <li>O "até" é a sua margem de negociação. <span class="hl">Não passe do teto da linha.</span></li>
+        <li>O abatimento é desconto na nova, <span class="hl">não vira dinheiro de volta</span>.</li>
+        <li>A churrasqueira antiga é recolhida pra recuperação. Combine a retirada.</li>
+        <li>Sempre registre a troca na ficha. <span class="hl">Sem ficha, não vale.</span></li>
+      </ul>
     </div>
   </div>
 
-  <!-- ABORDAR -->
-  <div class="screen" id="abordar">
+  <!-- 2. COMO VENDER -->
+  <div class="screen" id="vender">
     <button class="back" onclick="go('home')">‹ Voltar</button>
-    <h2 class="title">Abordagem <em>e dicas</em></h2>
+    <h2 class="title">Como <em>vender</em></h2>
+
+    <div class="seclabel">A mecânica, passo a passo</div>
     <div class="card">
-      <h3>Sugestão de fala</h3>
-      <div class="quote">"Esse mês a gente tem a Troca Premiada. Aquela churrasqueira que você já tem em casa vale desconto numa nova. Você manda uma foto dela, eu avalio e abato no modelo que você quiser. Qual modelo te interessa?"</div>
+      <ul>
+        <li>O cliente manda ou mostra uma <span class="hl">foto da churrasqueira que tem hoje</span>.</li>
+        <li>Ele diz <span class="hl">qual modelo novo</span> quer comprar.</li>
+        <li>Você confere a linha do modelo e aplica o abatimento da tabela.</li>
+        <li>Combina a retirada da usada e fecha a venda.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>O valor da usada é o abatimento</h3>
+      <p>Não importa o estado nem a idade da churrasqueira do cliente. O "valor de avaliação" dela é, na prática, o <span class="hl">desconto da campanha</span>, dentro do teto da linha. Assim o cliente sente que ganhou pela usada, e não que pediu desconto.</p>
+    </div>
+
+    <div class="seclabel">As falas</div>
+    <div class="card">
+      <h3>Sugestão de abordagem</h3>
+      <div class="quote">"Esse mês a gente tem a Troca Premiada. Aquela churrasqueira que você já tem em casa vale desconto numa nova. Você me manda uma foto dela, eu avalio e abato no modelo que você quiser. Qual modelo te interessa?"</div>
     </div>
     <div class="card">
       <h3>Puxe a emoção, depois o upgrade</h3>
-      <p>A churrasqueira atual do cliente tem história. Reconheça isso: <span class="hl">"essa que te serviu esse tempo todo agora ajuda a pagar uma melhor"</span>. É o que faz ele querer dar o passo.</p>
+      <p>A churrasqueira atual tem história. Reconheça: <span class="hl">"essa que te serviu esse tempo todo agora ajuda a pagar uma melhor"</span>. É o que faz o cliente querer dar o passo.</p>
     </div>
     <div class="card">
       <h3>O abatimento é negociação, não cartaz</h3>
-      <p>Não solte o teto de cara. Comece com uma parte do abatimento e <span class="hl">suba até o limite da linha só se o cliente segurar</span> a compra nisso. O teto é a sua última carta.</p>
+      <p>Não solte o teto de cara. Comece com uma parte e <span class="hl">suba até o limite da linha só se o cliente segurar</span> a compra nisso. Quem dá o máximo na primeira fala não tem pra onde ir depois.</p>
     </div>
     <div class="card">
       <h3>Use a tabela pra subir o cliente de linha</h3>
-      <p>Se o cliente está num modelo mais simples, mostre que numa linha melhor o abatimento é maior. Muitas vezes compensa pra ele subir, e a venda fica melhor pra todos.</p>
+      <p>Se ele está num modelo mais simples, mostre que numa linha melhor o abatimento é maior. Muitas vezes compensa pra ele subir, e a venda fica melhor pra todos.</p>
     </div>
+
+    <div class="seclabel">Atenção, não pode passar batido</div>
     <div class="card">
-      <h3>Sempre peça a foto</h3>
-      <p>A foto da churrasqueira atual é o que abre a conversa e dá a desculpa perfeita pra falar de preço. Peça logo: <span class="hl">"me manda uma foto da sua atual que eu já te falo o abatimento"</span>.</p>
-    </div>
-    <div class="card">
-      <h3>Pergunte bastante</h3>
-      <p>Boa venda é feita de pergunta, não de discurso. Pra quem é a churrasqueira nova, há quanto tempo tem a atual, o que falta na de hoje. Quanto mais ele fala, mais perto fica de fechar.</p>
+      <ul>
+        <li><span class="hl">Respeite o teto da linha:</span> Maestro 20%, Raiz 15%, Essence e Urban 10%. Acima disso, só com o responsável.</li>
+        <li>O abatimento é desconto na nova, <span class="hl">não é dinheiro de volta</span> nem cumulativo com outra promoção sem combinar antes.</li>
+        <li><span class="hl">Sempre peça a foto</span> da usada e registre a troca na ficha. Sem ficha, não vale.</li>
+        <li>Deixe combinado e registrado <span class="hl">como a usada será recolhida</span>.</li>
+        <li>Uma troca por cliente. Válido só em julho.</li>
+      </ul>
     </div>
   </div>
 
-  <!-- ATENCAO -->
-  <div class="screen" id="atencao">
-    <button class="back" onclick="go('home')">‹ Voltar</button>
-    <h2 class="title"><em>Atenção</em></h2>
-    <p class="intro">Pontos que não podem passar batido na Troca Premiada.</p>
-
-    <div class="card">
-      <h3>Respeite o teto da linha</h3>
-      <p>Maestro até 20%, Raiz até 15%, Essence e Urban até 10%. <span class="hl">Não passe do teto da linha</span> do modelo escolhido. Acima disso, só com autorização do responsável.</p>
-    </div>
-    <div class="card">
-      <h3>O abatimento é desconto, não dinheiro de volta</h3>
-      <p>O valor da usada vira <span class="hl">desconto na compra nova</span>. Não vira troco, não vira crédito em dinheiro e não é cumulativo com outra promoção sem combinar antes.</p>
-    </div>
-    <div class="card">
-      <h3>Sem ficha, a troca não vale</h3>
-      <p>Registre na ficha o modelo atual do cliente, a foto recebida, o modelo novo e o abatimento aplicado. <span class="hl">Sem registro, não tem troca.</span></p>
-    </div>
-    <div class="card">
-      <h3>Combine a retirada da usada</h3>
-      <p>Deixe claro e registrado como a churrasqueira antiga volta pra gente: quem leva, quem busca, prazo. Não deixe isso solto.</p>
-    </div>
-    <div class="card">
-      <h3>Uma troca por cliente</h3>
-      <p>Cada cliente faz uma troca dentro da campanha. Válido só em julho de 2026.</p>
-    </div>
-  </div>
-
-  <!-- FICHA -->
+  <!-- 3. FICHA -->
   <div class="screen" id="ficha">
     <button class="back" onclick="go('home')">‹ Voltar</button>
     <h2 class="title">Ficha <em>do cliente</em></h2>
@@ -438,11 +380,13 @@
     </div>
   </div>
 
-  <!-- REGULAMENTO -->
-  <div class="screen" id="regulamento">
+  <!-- 4. TEXTOS PRO CLIENTE -->
+  <div class="screen" id="textos">
     <button class="back" onclick="go('home')">‹ Voltar</button>
-    <h2 class="title"><em>Regulamento</em></h2>
-    <p class="intro">Texto pronto para o cliente. Toque em copiar e cole no WhatsApp dele.</p>
+    <h2 class="title">Textos <em>pro cliente</em></h2>
+    <p class="intro">Textos prontos. Toque em copiar e cole no WhatsApp do cliente.</p>
+
+    <div class="seclabel">Regulamento</div>
     <div class="output show" id="regout">
       <pre id="regtext">REGULAMENTO - TROCA PREMIADA
 Mestre Parrillero - Julho de 2026
@@ -473,13 +417,8 @@ A churrasqueira atual é recolhida pela Mestre Parrillero. A forma de retirada �
 Mestre Parrillero</pre>
       <button class="copy" id="regcopybtn" onclick="copiarReg()">Copiar regulamento</button>
     </div>
-  </div>
 
-  <!-- FORMAS DE PAGAMENTO -->
-  <div class="screen" id="formaspgto">
-    <button class="back" onclick="go('home')">‹ Voltar</button>
-    <h2 class="title">Formas <em>de pagamento</em></h2>
-    <p class="intro">Mensagem pronta pro cliente. Toque em copiar e cole no WhatsApp dele.</p>
+    <div class="seclabel">Formas de pagamento</div>
     <div class="output show" id="pgtoout">
       <pre id="pgtotext">MESTRE PARRILLERO - TROCA PREMIADA (JULHO)
 
