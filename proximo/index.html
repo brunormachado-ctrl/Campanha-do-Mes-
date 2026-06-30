@@ -50,24 +50,26 @@
   }
   .hero-toptitle::after{background:linear-gradient(90deg,var(--ember),transparent);}
 
-  /* ARTE DE DESTAQUE (placeholder ate chegar a arte da Troca Premiada) */
+  /* ARTE DE DESTAQUE — banner da Troca Premiada */
   .hero-art{
-    height:150px;border-radius:16px;margin-bottom:16px;border:1px solid var(--line);
+    border-radius:16px;margin-bottom:16px;border:1px solid var(--line);
     background:radial-gradient(120% 140% at 50% 0%, #2a100e 0%, #1a1413 55%, #0d0c0b 100%);
-    display:grid;place-items:center;position:relative;overflow:hidden;
+    position:relative;overflow:hidden;
   }
-  .hero-art img{width:100%;height:100%;object-fit:cover;}
-  .hero-art::after{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(60% 80% at 50% 120%, rgba(225,43,34,.35), transparent 70%);
-  }
-  .hero-art .grill{
-    position:relative;z-index:1;text-align:center;
+  /* a arte ocupa a largura toda e mantem a proporcao original (nao corta nada) */
+  .hero-art img{display:block;width:100%;height:auto;}
+  /* desenho temporario: aparece so se a imagem ainda nao foi colocada */
+  .hero-art .ph{
+    min-height:150px;display:grid;place-items:center;text-align:center;position:relative;
     font-family:'Oswald',sans-serif;font-weight:700;
     font-size:32px;letter-spacing:.04em;text-transform:uppercase;color:var(--ember-soft);
     text-shadow:0 2px 18px rgba(225,43,34,.5);
   }
-  .hero-art .grill small{display:block;font-size:12px;letter-spacing:.18em;color:var(--muted2);margin-top:6px;font-weight:400;}
+  .hero-art .ph::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(60% 80% at 50% 120%, rgba(225,43,34,.35), transparent 70%);
+  }
+  .hero-art .ph small{display:block;font-size:12px;letter-spacing:.18em;color:var(--muted2);margin-top:6px;font-weight:400;}
 
   .herotitle{text-align:center;margin-bottom:24px;}
   .herotitle h1{
@@ -189,8 +191,13 @@
 
   <div class="brandbar"><img class="brandlogo" src="../mascote.png" alt="Mestre Parrillero"></div>
   <div class="hero-toptitle">Troca Premiada</div>
-  <!-- Quando a arte final da campanha estiver pronta, troque por: <img src="troca-premiada.png" alt="Troca Premiada"> -->
-  <div class="hero-art"><span class="grill">TROCA PREMIADA<small>Compramos a sua na troca pela nova</small></span></div>
+  <!-- Banner da campanha. A arte fica no arquivo troca-premiada.jpg, nesta mesma pasta.
+       Se o arquivo nao existir, aparece o desenho temporario abaixo automaticamente. -->
+  <div class="hero-art">
+    <img src="troca-premiada.jpg" alt="Troca Premiada — compramos a sua na troca pela nova"
+         onerror="this.style.display='none';document.getElementById('heroPh').style.display='grid';">
+    <div class="ph" id="heroPh" style="display:none">TROCA PREMIADA<small>Compramos a sua na troca pela nova</small></div>
+  </div>
   <div class="herotitle">
     <h1>Campanha do Mestre</h1>
     <span>Julho 2026</span>
@@ -210,13 +217,18 @@
         <span class="t">Como vender</span>
         <span class="d">A mecânica, as falas e as regras</span>
       </button>
-      <button class="item" onclick="go('ficha')">
+      <button class="item" onclick="go('pagamento')">
         <span class="num">3</span>
+        <span class="t">Pagamento e descontos</span>
+        <span class="d">Pix e cartão, com e sem troca</span>
+      </button>
+      <button class="item" onclick="go('ficha')">
+        <span class="num">4</span>
         <span class="t">Ficha do cliente</span>
         <span class="d">Anote a troca e mande pro responsável</span>
       </button>
       <button class="item" onclick="go('textos')">
-        <span class="num">4</span>
+        <span class="num">5</span>
         <span class="t">Textos pro cliente</span>
         <span class="d">Regulamento e pagamento, copiar e colar</span>
       </button>
@@ -256,6 +268,7 @@
       <ul>
         <li>Válida durante <span class="hl">julho de 2026</span>. Uma troca por cliente.</li>
         <li>O "até" é a sua margem de negociação. <span class="hl">Não passe do teto da linha.</span></li>
+        <li>Esse teto vale <span class="hl">no Pix</span>. No cartão, vale <span class="hl">a metade</span>. Tudo em "Pagamento e descontos".</li>
         <li>O abatimento é desconto na nova, <span class="hl">não vira dinheiro de volta</span>.</li>
         <li>A churrasqueira antiga é recolhida pra recuperação. Combine a retirada.</li>
         <li>Sempre registre a troca na ficha. <span class="hl">Sem ficha, não vale.</span></li>
@@ -312,7 +325,57 @@
     </div>
   </div>
 
-  <!-- 3. FICHA -->
+  <!-- 3. PAGAMENTO E DESCONTOS -->
+  <div class="screen" id="pagamento">
+    <button class="back" onclick="go('home')">‹ Voltar</button>
+    <h2 class="title">Pagamento <em>e descontos</em></h2>
+    <p class="intro">Uso interno. Esses números são o seu limite de negociação. <span class="hl">Não fale porcentagem pro cliente</span> — pro cliente é só: "no Pix tem desconto".</p>
+
+    <div class="seclabel">Com Troca Premiada</div>
+    <div class="card">
+      <h3>O desconto depende da forma de pagamento</h3>
+      <p>O abatimento da linha é o <span class="hl">teto no Pix</span>. No cartão, vale <span class="hl">a metade</span> desse teto. <span class="hl">Não existe desconto sobre desconto:</span> o abatimento já é o desconto, e a forma de pagamento define quanto dele entra.</p>
+    </div>
+    <div class="tier top">
+      <div><div class="ln">Maestro</div><div class="sub">Pix até 20% · Cartão até 10%</div></div>
+      <div class="pct">20%</div>
+    </div>
+    <div class="tier">
+      <div><div class="ln">Raiz</div><div class="sub">Pix até 15% · Cartão até 7,5%</div></div>
+      <div class="pct">15%</div>
+    </div>
+    <div class="tier">
+      <div><div class="ln">Essence</div><div class="sub">Pix até 10% · Cartão até 5%</div></div>
+      <div class="pct">10%</div>
+    </div>
+    <div class="tier">
+      <div><div class="ln">Urban</div><div class="sub">Pix até 10% · Cartão até 5%</div></div>
+      <div class="pct">10%</div>
+    </div>
+
+    <div class="seclabel">Sem troca (cliente não quer trocar)</div>
+    <div class="card">
+      <h3>No Pix</h3>
+      <p>Você tem autonomia pra ir <span class="hl">até 15% de desconto</span>. O pagamento é <span class="hl">50% de entrada</span> pra garantir a parrilha e entrar na produção, e os <span class="hl">outros 50% quando a parrilha fica pronta</span>.</p>
+    </div>
+    <div class="card">
+      <h3>No cartão</h3>
+      <ul>
+        <li>Valor cheio em <span class="hl">até 12x sem juros</span>.</li>
+        <li>Ou com <span class="hl">5% de desconto</span> em <span class="hl">até 3x sem juros</span>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Regras de ouro</h3>
+      <ul>
+        <li>Comece por baixo e <span class="hl">suba só se o cliente segurar</span> a compra. Quem dá o teto na primeira fala não tem pra onde ir depois.</li>
+        <li><span class="hl">Nunca</span> desconto em cima de desconto.</li>
+        <li>Pro cliente: diga que "no Pix tem desconto". <span class="hl">Não diga o número.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. FICHA -->
   <div class="screen" id="ficha">
     <button class="back" onclick="go('home')">‹ Voltar</button>
     <h2 class="title">Ficha <em>do cliente</em></h2>
@@ -381,7 +444,7 @@
     </div>
   </div>
 
-  <!-- 4. TEXTOS PRO CLIENTE -->
+  <!-- 5. TEXTOS PRO CLIENTE -->
   <div class="screen" id="textos">
     <button class="back" onclick="go('home')">‹ Voltar</button>
     <h2 class="title">Textos <em>pro cliente</em></h2>
@@ -396,20 +459,16 @@ Mestre Parrillero - Julho de 2026
 A Troca Premiada é válida durante o mês de julho de 2026. Uma troca por cliente.
 
 2. COMO FUNCIONA
-Você traz a sua churrasqueira atual, a gente avalia e abate o valor na compra de uma churrasqueira nova. O abatimento é aplicado como desconto no modelo novo escolhido.
+Você escolhe o modelo novo de churrasqueira que deseja e nos envia uma foto da sua churrasqueira atual. A gente avalia a sua e faz uma oferta. Esse valor de avaliação vira desconto na compra do modelo novo escolhido.
 
-3. ABATIMENTO
-O abatimento depende da linha do modelo novo escolhido:
-- Linha Maestro: até 20%.
-- Linha Raiz: até 15%.
-- Linha Essence e Urban: até 10%.
-O valor da sua churrasqueira atual entra como desconto, dentro do teto da linha escolhida, independentemente da idade ou do estado dela.
+3. AVALIAÇÃO
+O valor de avaliação da sua churrasqueira atual é informado pelo vendedor no atendimento e depende do modelo novo escolhido. A avaliação é feita independentemente da idade ou do estado da sua churrasqueira.
 
 4. A CHURRASQUEIRA USADA
 A churrasqueira atual é recolhida pela Mestre Parrillero. A forma de retirada é combinada no ato da compra.
 
 5. CONDIÇÕES
-- O abatimento é desconto na compra da nova, não é convertido em dinheiro.
+- O valor de avaliação é desconto na compra da nova, não é convertido em dinheiro.
 - Uma troca por cliente.
 - Sujeito à avaliação no ato da venda.
 
@@ -423,13 +482,13 @@ Mestre Parrillero</pre>
     <div class="output show" id="pgtoout">
       <pre id="pgtotext">MESTRE PARRILLERO - TROCA PREMIADA (JULHO)
 
-Sua churrasqueira atual vira desconto na nova. Você manda a foto, a gente avalia e abate no modelo que você quiser (abatimento de até 20%, conforme o modelo).
+Sua churrasqueira atual vira desconto na nova. Você manda a foto, a gente avalia e abate no modelo que você quiser.
 
 Formas de pagamento:
-- Cartão: até 18x sem juros.
-- Pix à vista: condição especial, confirme com o vendedor.
+- No Pix você tem desconto especial.
+- No cartão a gente parcela pra você.
 
-Quer mandar a foto da sua atual pra eu já te passar o abatimento?</pre>
+Me manda a foto da sua atual que eu já te passo a condição certinha. Qual modelo te interessa?</pre>
       <button class="copy" id="pgtocopybtn" onclick="copiarPgto()">Copiar mensagem</button>
     </div>
   </div>
